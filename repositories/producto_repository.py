@@ -5,6 +5,7 @@ class ProductoRepository:
     def _init_(self):
         # Diccionario en memoria: id -> Producto
         self._productos: Dict[int, Producto] = {}
+        self._id_counter = 1
 
     def listar(self):
         return list(self._productos.values())
@@ -12,7 +13,12 @@ class ProductoRepository:
     def obtener(self, producto_id: int):
         return self._productos.get(producto_id)
 
-    def crear(self, producto: Producto):
+    def crear(self, producto: Producto) -> Producto:
+        # Si el producto no tiene id, se lo asignamos automáticamente
+        if producto.id is None:
+            producto.id = self._id_counter
+            self._id_counter += 1
+
         self._productos[producto.id] = producto
         return producto
 
