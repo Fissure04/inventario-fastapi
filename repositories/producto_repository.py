@@ -2,7 +2,7 @@ from typing import Dict
 from models.producto import Producto
 
 class ProductoRepository:
-    def _init_(self):
+    def __init__(self):
         # Diccionario en memoria: id -> Producto
         self._productos: Dict[int, Producto] = {}
         self._id_counter = 1
