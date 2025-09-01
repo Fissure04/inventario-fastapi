@@ -8,7 +8,7 @@ from services.producto_service import ProductoService
 producto_repository = ProductoRepository()
 producto_service = ProductoService(producto_repository)
 
-router = APIRouter(prefix="/productos", tags=["Productos"])
+router = APIRouter(prefix="/farmasync/inventario", tags=["Inventario"])
 
 @router.get("/", response_model=List[Producto], summary="Listar productos")
 def listar_productos():
