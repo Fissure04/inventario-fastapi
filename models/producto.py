@@ -7,3 +7,4 @@ class Producto(BaseModel):
     descripcion: Optional[str] = None
     precio: float
     stock: int
+    provedorId: str
