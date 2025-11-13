@@ -9,7 +9,7 @@ class ProductoService:
     def listar_productos(self) -> List[Producto]:
         return self.repository.listar()
 
-    def obtener_producto(self, producto_id: int) -> Optional[Producto]:
+    def obtener_producto(self, producto_id: str) -> Optional[Producto]:
         return self.repository.obtener(producto_id)
 
     def crear_producto(self, producto: Producto) -> Producto:
@@ -18,10 +18,10 @@ class ProductoService:
             raise ValueError("El stock no puede ser negativo")
         return self.repository.crear(producto)
 
-    def actualizar_producto(self, producto_id: int, producto: Producto) -> Optional[Producto]:
+    def actualizar_producto(self, producto_id: str, producto: Producto) -> Optional[Producto]:
         if producto.stock < 0:
             raise ValueError("El stock no puede ser negativo")
         return self.repository.actualizar(producto_id, producto)
 
-    def eliminar_producto(self, producto_id: int) -> Optional[Producto]:
+    def eliminar_producto(self, producto_id: str) -> bool:
         return self.repository.eliminar(producto_id)
