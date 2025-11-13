@@ -8,3 +8,14 @@ class Producto(BaseModel):
     precio: float
     stock: int
     provedor_id: str
+    imagen_url: Optional[str] = None
+
+    def to_dict(self):
+        return {
+            "nombre": self.nombre,
+            "descripcion": self.descripcion,
+            "precio": self.precio,
+            "stock": self.stock,
+            "provedor_id": self.provedor_id,
+            "imagen_url": self.imagen_url
+        }
