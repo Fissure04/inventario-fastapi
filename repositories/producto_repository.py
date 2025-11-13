@@ -34,3 +34,13 @@ class ProductoRepository:
     def eliminar(self, producto_id: str):
         result = producto_collection.delete_one({"_id": ObjectId(producto_id)})
         return result.deleted_count > 0
+
+
+    def obtener_por_nombre(self, nombre: str):
+        p = producto_collection.find_one({"nombre": nombre})
+        if p:
+            p["id"] = str(p["_id"])
+            del p["_id"]
+            return Producto(**p)
+        return None
+

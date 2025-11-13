@@ -11,12 +11,28 @@ class ProductoService:
 
     def obtener_producto(self, producto_id: str) -> Optional[Producto]:
         return self.repository.obtener(producto_id)
-
+    
     def crear_producto(self, producto: Producto) -> Producto:
-        # Regla de negocio: stock no puede ser negativo
         if producto.stock < 0:
             raise ValueError("El stock no puede ser negativo")
-        return self.repository.crear(producto)
+
+        existente = self.repository.obtener_por_nombre(producto.nombre)
+
+        if existente:
+            # Validamos que el id exista
+            if not existente.id:
+                raise ValueError("El producto existente no tiene un ID válido")
+
+            existente.stock += producto.stock
+            actualizado = self.repository.actualizar(existente.id, existente)
+            if actualizado is None:
+                raise ValueError("Error al actualizar el producto existente")
+            return actualizado
+
+        creado = self.repository.crear(producto)
+        if creado is None:
+            raise ValueError("Error al crear el producto")
+        return creado
 
     def actualizar_producto(self, producto_id: str, producto: Producto) -> Optional[Producto]:
         if producto.stock < 0:
