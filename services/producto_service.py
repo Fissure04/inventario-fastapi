@@ -71,3 +71,13 @@ class ProductoService:
         producto.stock -= cantidad
         return self.repository.actualizar(producto_id, producto)
 
+    def actualizar_precio(self, producto_id: str, nuevo_precio: float):
+        if nuevo_precio <= 0:
+            raise ValueError("El precio debe ser mayor a 0")
+
+        producto = self.repository.obtener(producto_id)
+        if not producto:
+            return None
+
+        producto.precio = nuevo_precio
+        return self.repository.actualizar(producto_id, producto)

@@ -2,6 +2,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 from models.producto import Producto
 from models.movimiento_stock import MovimientoStock
+from models.precio_update import PrecioUpdate
 from repositories.producto_repository import ProductoRepository
 from services.producto_service import ProductoService
 
@@ -45,6 +46,16 @@ def actualizar_producto(id: str, producto: Producto):
         if not updated:
             raise HTTPException(status_code=404, detail="Producto no encontrado")
         return updated
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@router.patch("/{id}/precio", summary="Actualizar solo el precio de un producto")
+def actualizar_precio(id: str, data: PrecioUpdate):
+    try:
+        actualizado = producto_service.actualizar_precio(id, data.precio)
+        if not actualizado:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
+        return actualizado
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
