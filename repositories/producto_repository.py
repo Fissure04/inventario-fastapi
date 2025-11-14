@@ -25,6 +25,15 @@ class ProductoRepository:
         return producto
 
     def actualizar(self, producto_id: str, producto: Producto):
+        data = producto.to_dict()
+
+        # 🔒 No permitir modificar el ID bajo ningún caso
+        if "id" in data:
+            del data["id"]
+
+        if "_id" in data:
+            del data["_id"]
+        
         producto_collection.update_one(
             {"_id": ObjectId(producto_id)},
             {"$set": producto.to_dict()}
