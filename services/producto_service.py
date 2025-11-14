@@ -45,3 +45,29 @@ class ProductoService:
     def buscar_por_nombre(self, nombre: str):
         return self.repository.buscar_por_nombre(nombre)
 
+    def agregar_stock(self, producto_id: str, cantidad: int):
+        if cantidad <= 0:
+            raise ValueError("La cantidad debe ser mayor que 0")
+
+        producto = self.repository.obtener(producto_id)
+        if not producto:
+            return None
+
+        producto.stock += cantidad
+        return self.repository.actualizar(producto_id, producto)
+
+
+    def descontar_stock(self, producto_id: str, cantidad: int):
+        if cantidad <= 0:
+            raise ValueError("La cantidad debe ser mayor que 0")
+
+        producto = self.repository.obtener(producto_id)
+        if not producto:
+            return None
+
+        if producto.stock < cantidad:
+            raise ValueError("Stock insuficiente para realizar la operación")
+
+        producto.stock -= cantidad
+        return self.repository.actualizar(producto_id, producto)
+
