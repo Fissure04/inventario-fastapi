@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
 from models.producto import Producto
+from models.movimiento_stock import MovimientoStock
 from repositories.producto_repository import ProductoRepository
 from services.producto_service import ProductoService
 
@@ -53,3 +54,12 @@ def eliminar_producto(id: str):
     if not deleted:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return {"detalle": "Producto eliminado correctamente"}
+
+@router.post("/{id}/entrada", summary="Agregar stock")
+def agregar_stock(id: str, movimiento: MovimientoStock):
+    return producto_service.agregar_stock(id, movimiento.cantidad)
+
+
+@router.post("/{id}/salida", summary="Descontar stock")
+def descontar_stock(id: str, movimiento: MovimientoStock):
+    return producto_service.descontar_stock(id, movimiento.cantidad)
