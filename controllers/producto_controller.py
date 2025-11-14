@@ -14,6 +14,15 @@ router = APIRouter(prefix="/farmasync/inventario", tags=["Inventario"])
 def listar_productos():
     return producto_service.listar_productos()
 
+@router.get("/buscar", summary="Buscar productos por nombre", response_model=List[Producto])
+def buscar_producto_por_nombre(nombre: str):
+    productos = producto_service.buscar_por_nombre(nombre)
+
+    if not productos:
+        raise HTTPException(status_code=404, detail="No se encontraron productos con ese nombre")
+
+    return productos
+
 @router.get("/{id}", response_model=Producto, summary="Obtener producto por ID")
 def obtener_producto(id: str):
     producto = producto_service.obtener_producto(id)

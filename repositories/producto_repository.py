@@ -44,3 +44,14 @@ class ProductoRepository:
             return Producto(**p)
         return None
 
+    def buscar_por_nombre(self, nombre: str):
+    # Buscar coincidencias parciales (case-insensitive)
+        query = {"nombre": {"$regex": nombre, "$options": "i"}}
+
+        productos = []
+        for p in producto_collection.find(query):
+            p["id"] = str(p["_id"])
+            del p["_id"]
+            productos.append(Producto(**p))
+
+        return productos
