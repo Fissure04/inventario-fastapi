@@ -41,3 +41,7 @@ class ProductoService:
 
     def eliminar_producto(self, producto_id: str) -> bool:
         return self.repository.eliminar(producto_id)
+    
+    def buscar_por_nombre(self, nombre: str):
+        return self.repository.buscar_por_nombre(nombre)
+
